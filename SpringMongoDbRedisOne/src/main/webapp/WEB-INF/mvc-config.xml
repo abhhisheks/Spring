@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- Uncomment and your base-package here: -->
+	<context:component-scan base-package="Controller" />
+
+	<mvc:annotation-driven />
+	<import resource="servlet-master.xml" />
+	
+	<import resource="servlet-redis.xml" />
+	
+    <import resource="servlet-mongodb.xml" /> 
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<!-- Example: a logical view name of 'showMessage' is mapped to '/WEB-INF/jsp/showMessage.jsp' -->
+		<property name="prefix" value="/WEB-INF/view/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+	
+	
+	
+	<bean id="serv_user" class="Service.UserService"/>
+	<!-- Mysql Dao At Start -->
+	<bean id="dao_user" class="Dao.UserDao">
+		<property name="jdbcTemplate" ref="jdbcTemplate" />
+	</bean>
+	<bean id="dao_user_redis" class="Dao.UserRedisDao">
+     	<property name="r_1_5" ref="r_1_5"/>
+    </bean>
+    <bean id="dao_user_mongo" class="Dao.UserMongoDb">
+     	<property name="mongoTemplate" ref="mongoTemplate"/>
+    </bean>
+
+</beans>
